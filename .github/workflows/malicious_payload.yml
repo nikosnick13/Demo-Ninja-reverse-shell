@@ -49,7 +49,7 @@ jobs:
       run: zip payload.zip shell.py
 
     - name: Upload Payload Artifact
-      uses: actions/upload-artifact@3f62f6dbcae7c7a87bdf2a8eebf8ff778f3ff6e1
+      uses: actions/upload-artifact@v2
       with:
         name: reverse-shell
         path: payload.zip
