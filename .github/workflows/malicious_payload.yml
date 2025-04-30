@@ -10,7 +10,8 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v4
 
     - name: Create Reverse Shell Payload
       run: |
@@ -48,3 +49,4 @@ jobs:
       with:
         name: reverse-shell
         path: payload.zip
+ 
